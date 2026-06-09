@@ -54,84 +54,26 @@ src/
 └── main.tsx                       # Entry point React
 ```
 
-### Por que essa arquitetura?
-
-- **Separação de concernes**: tipos (`types/`), estado global (`context/`), UI reutilizável (`components/common/`), lógica de negócio (`components/dashboard/`), páginas (`views/`).
-- **Context API**: o estado da aplicação (view ativa, região, modo, satélite, loading) é centralizado no `AppContext`, eliminando _prop drilling_.
-- **Componentes puros**: `SplashScreen`, `Sidebar` e `Modal` são componentes genéricos que podem ser reutilizados em qualquer contexto.
-- **Fácil manutenção**: cada arquivo tem menos de 100 linhas em média, com responsabilidade única.
-
----
 
 ## 🚀 Funcionalidades Principais
 
-### 🎬 Tela de Inicialização (_Splash Screen_)
-
-Ao carregar, o sistema exibe uma tela de boot profissional simulando a inicialização de um centro de controle orbital:
-
-- Logotipo pulsante com gradiente neon e efeito _glow_ (`shadow-[0_0_40px]`).
-- Barra de progresso animada com gradiente ciano-verde.
-- Mensagens de status dinâmicas que evoluem a cada segundo:
-  1. _"Estabelecendo conexão orbital..."_
-  2. _"Sincronizando dados dos satélites Sentinel..."_
-  3. _"Carregando Gêmeo Digital..."_
-- Transição suave de 700ms com fade-in (`opacity-0 → opacity-100`) para o dashboard principal.
-
-### 📈 Painel Geral (_Dashboard Hub_)
-
-- **Seletor dinâmico de satélite**: alterne entre **Sentinel-2A**, **Landsat 9** ou **CBERS-4A** para ver métricas ambientais condicionais.
-- **Indicadores (KPIs)** atualizados via Context API:
-  - Satélites Ativos
-  - Alertas Críticos (com闪烁 vermelho quando > 0)
-  - **Área Ambiental Poupada** (em Hectares)
-  - Assertividade da IA (com barra de progresso)
-- **Timeline de atividades** orbitais simuladas em tempo real.
-- **Botão funcional "Baixar Relatório Mensal PDF"** — aciona o download de um arquivo `.txt` com dados reais do período e satélite selecionado.
-- **Botão "Sincronizar Sensores Orbitais"** com animação de _loading_ de 2 segundos.
-
-### 🗺️ Mapeamento Orbital (_Mapa Interativo Leaflet_)
-
-- Mapa geográfico real utilizando **OpenStreetMap** e **React-Leaflet** — sem chaves de API.
-- **Seletor de região**: **Carajás — PA** e **Quadrilátero Ferrífero — MG**, com zoom e _pan_ automáticos via `map.flyTo()`.
-- Dois modos de operação:
-  - **🟢 Prospecção Mineral** — polígonos brilhantes ciano/verde sobre depósitos simulados de lítio, cobre e níquel. Cada polígono exibe _popup_ com dados estruturais (minério, teor, profundidade, resistividade).
-  - **🔴 Segurança de Barragens** — polígonos vermelhos intermitentes tracejados sobre barragens. O clique abre uma barra lateral com:
-    - Gráfico SVG de deslocamento acumulado do solo (mm) com curva crítica ascendente.
-    - Parâmetros de engenharia (tensão, probabilidade de ruptura Monte Carlo, sensor InSAR).
-    - Botão de ação: **"Disparar Alerta de Evacuação para Autoridades"**.
-- **Legenda dinâmica** adaptada ao modo ativo.
-
-### 📋 Relatórios & Auditoria (_Tabela de Dados e Inspeção_)
-
-- Tabela histórica com 8 auditorias de risco geológico: **ID**, **Data**, **Região**, **Tipo de Mineração** e **Status** (Estável ✅ / Atenção ⚠️ / Crítico 🚨).
-- Linhas com cores alternadas e _hover_ destacado.
-- Botão **"Inspecionar Dados"** por linha → modal responsivo com:
-  - Dados da auditoria em grid.
-  - **Análise de Composição Química** — lista exclusiva de compostos detectados (ex.: Ferro (Fe) — 72,4%), sem gráficos de banda espectral.
-  - Teor químico estimado e confiança da análise.
-- Modal fecha com **ESC** ou clique no fundo.
-
-### ⚙️ Configurações de Satélite
-
-- **Parâmetros Orbítais Globais**: altitude, inclinação SSO, período de revista, faixa de imageamento, polarização.
-- **Processamento de Imagens**: correção 6S, ortorretificação SRTM, fusão Gram-Schmidt, classificação Random Forest, compressão JPEG 2000.
-- **Sensores Ativos**: 4 sensores (SAR-C, MSI, MUX, AWFI) com toggle, resolução, ângulo e calibração.
-
----
+- Tela de Inicialização 
+- Painel Geral
+- Mapeamento Orbital
+- Relatórios & Auditoria
+- Configurações de Satélite
 
 ## 🛠️ Tecnologias Utilizadas
 
-| Tecnologia          | Versão | Finalidade                              |
-| ------------------- | ------ | --------------------------------------- |
-| **React**           | 19     | Biblioteca de interface do usuário      |
-| **TypeScript**      | 5      | Tipagem estática e segurança do código  |
-| **Vite**            | 8      | Bundler e servidor de desenvolvimento   |
-| **Tailwind CSS**    | 4      | Estilização utilitária com tema escuro  |
-| **Leaflet**         | 1.9    | Biblioteca de mapas interativos         |
-| **React-Leaflet**   | 5      | Integração declarativa do Leaflet c/ React |
-| **React Context**   | 19     | Gerenciamento de estado global          |
-
-> 🔑 **Nenhuma chave de API externa é necessária.** O mapa utiliza tiles gratuitos do **OpenStreetMap**.
+| Tecnologia         |
+| ------------------- |
+| **React**           |
+| **TypeScript**      |
+| **Vite**            |
+| **Tailwind CSS**    |
+| **Leaflet**          |
+| **React-Leaflet**   |
+| **React Context**   |
 
 ---
 
@@ -165,19 +107,6 @@ Acesse no navegador: **[http://localhost:5173](http://localhost:5173)**
 npm run build
 npm run preview
 ```
-
----
-
-## 🧪 Como o protótipo foi construído
-
-- **Estado global**: centralizado no `AppContext` usando `createContext` + `useContext`, eliminando _prop drilling_.
-- **Boot sequence**: `setTimeout` encadeados (1s, 2s, 3s) no Provider; barra de progresso e mensagens atualizadas via estado.
-- **Mapa**: `react-leaflet` v5 com `MapContainer`, `TileLayer` (OpenStreetMap), `Polygon` e `Popup`. O `MapController` usa o hook `useMap()` para chamar `flyTo()` automaticamente quando a região muda.
-- **Gráfico de deslocamento**: SVG desenhado manualmente com `<polyline>`, `<polygon>` (gradiente de área) e `<circle>` para os pontos de dados.
-- **Estilização**: 100% Tailwind CSS com tema escuro `bg-slate-950`. Animações customizadas via `@keyframes` no `index.css` (`pulse-glow`, `flash-danger`, `fade-in-up`, `slide-in-right`).
-- **Modal**: componente reutilizável com fechamento via ESC e clique no backdrop.
-
----
 
 ## 👥 Desenvolvido por
 
