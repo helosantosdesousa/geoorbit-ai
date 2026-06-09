@@ -184,8 +184,10 @@ npm run preview
 | Nome                               | RM     | 
 | ---------------------------------- | ------ |
 | Heloísa Santos de Sousa                    | 550256 |       
-| _Nome do colega_                   | RM0000 |       
-| _Nome do colega_                   | RM0000 |       
+| Lucas Henrique Carrascoa                   | 99883 |       
+| Pedro Reginato                 | 550896 |
+| Francisco Henrique Lima                   | 99545 |       
+| Diogo Makoto Mano                   | 98446 |    
 
 **FIAP — Faculdade de Informática e Administração Paulista**  
 **Global Solution — Space Connect**  
